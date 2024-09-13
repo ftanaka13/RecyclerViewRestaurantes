@@ -3,6 +3,7 @@ package br.com.faculdadeimpacta.recyclerviewrestaurantes
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -71,6 +72,10 @@ class MainActivity : AppCompatActivity() {
                         drawableRestaurante
                     )
                 )
+
+                binding.cardViewRoot.setOnClickListener {
+                    Toast.makeText(context, restaurante.toString(), Toast.LENGTH_LONG).show()
+                }
             }
         }
 
