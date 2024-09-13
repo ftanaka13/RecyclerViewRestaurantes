@@ -17,14 +17,7 @@ class MainActivity : AppCompatActivity() {
 
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
-    private val listaRestaurante = listOf(
-        Restaurante("Outback", "Churrasco", 5.0f, true),
-        Restaurante("Girafas", "Brasileira", 3.0f, false),
-        Restaurante("Mc Donalds", "Hamburger", 3.5f, false),
-        Restaurante("Pizza hut", "Pizza", 3.8f, false),
-        Restaurante("Guaraná", "Bebida", 4.4f, true),
-        Restaurante("Madero", "Hamburger", 4.8f, false),
-    )
+    private val listaRestaurante = mutableListOf<Restaurante>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,8 +36,35 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    fun adicionarRestaurante(restaurante: Restaurante) {
+        this.listaRestaurante.add(restaurante)
+        binding.recyclerView.adapter?.notifyItemInserted(this.listaRestaurante.indexOf(restaurante))
+    }
+
+    override fun onStart() {
+        super.onStart()
+        adicionarRestaurante(
+            Restaurante(
+                "Coco bambu",
+                "Frutos do mar",
+                5.0F,
+                true
+            )
+        )
+        adicionarRestaurante(Restaurante("Outback", "Churrasco", 5.0f, true))
+        adicionarRestaurante(Restaurante("Girafas", "Brasileira", 3.0f, false))
+        adicionarRestaurante(Restaurante("Mc Donalds", "Hamburger", 3.5f, false))
+        adicionarRestaurante(Restaurante("Pizza hut", "Pizza", 3.8f, false))
+        adicionarRestaurante(Restaurante("Guaraná", "Bebida", 4.4f, true))
+        adicionarRestaurante(Restaurante("Madero", "Hamburger", 4.8f, false))
+    }
+
     class CustomAdapter(private val listaRestaurante: List<Restaurante>) :
         RecyclerView.Adapter<CustomAdapter.CustomViewHolder>() {
+
+        fun notificaMudanca(restaurante: Restaurante) {
+            this.notifyItemChanged(listaRestaurante.indexOf(restaurante))
+        }
 
         inner class CustomViewHolder(private val binding: RestauranteItemBinding) :
             RecyclerView.ViewHolder(binding.root) {
@@ -75,6 +95,12 @@ class MainActivity : AppCompatActivity() {
 
                 binding.cardViewRoot.setOnClickListener {
                     Toast.makeText(context, restaurante.toString(), Toast.LENGTH_LONG).show()
+                }
+
+                binding.imageViewFavorito.setOnClickListener {
+                    restaurante.favorito = !restaurante.favorito
+                    // Persistir alteração do valor
+                    notificaMudanca(restaurante)
                 }
             }
         }
