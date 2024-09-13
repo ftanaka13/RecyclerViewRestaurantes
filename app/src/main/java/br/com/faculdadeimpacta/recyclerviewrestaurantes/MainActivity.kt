@@ -69,9 +69,7 @@ class MainActivity : AppCompatActivity() {
         inner class CustomViewHolder(private val binding: RestauranteItemBinding) :
             RecyclerView.ViewHolder(binding.root) {
             fun onBind(restaurante: Restaurante) {
-                binding.textViewNome.text = restaurante.nome
-                binding.textViewNota.text = restaurante.nota.toString()
-                binding.textViewTipoCozinha.text = restaurante.tipoCozinha
+                binding.restaurante = restaurante
 
                 val context = binding.root.context
 
